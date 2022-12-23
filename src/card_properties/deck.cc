@@ -1,6 +1,7 @@
 #include "deck.h"
 
 #include <algorithm>
+#include <iostream>
 #include <random>
 
 namespace blackjack::card_properties {
@@ -14,16 +15,19 @@ Deck::Deck() {
   }
 }
 
-template <typename URBG>
-void Deck::shuffle(URBG&& rng) {
-  std::shuffle(cards_.begin(), cards_.end(), rng);
-}
-
 Deck Deck::peek(unsigned int n) {
   return Deck{{cards_.begin(), n > cards_.size() ? cards_.end() : cards_.begin() + n}};
 }
 
-Card Deck::peek() { return Deck::peek(1).pop(); }
+std::optional<Card> Deck::peek() {
+  auto deck = Deck::peek(1);
+  if (deck.cards_.empty()) {
+    std::cout << "No more cards in deck. Cannot peek." << std::endl;
+    return std::nullopt;
+  }
+
+  return Deck::peek(1).pop();
+}
 
 Deck Deck::pop(unsigned int n) {
   Deck ret{{cards_.begin(), n > cards_.size() ? cards_.end() : cards_.begin() + n}};
@@ -37,6 +41,15 @@ Deck Deck::pop(unsigned int n) {
   return ret;
 }
 
-Card Deck::pop() { return Deck::pop(1).cards_.at(0); }
+std::optional<Card> Deck::pop() {
+  auto deck = Deck::pop(1);
+
+  if (deck.cards_.empty()) {
+    std::cout << "No more cards in deck. Cannot pop." << std::endl;
+    return std::nullopt;
+  }
+
+  return deck.cards_.at(0);
+}
 
 }  // namespace blackjack::card_properties

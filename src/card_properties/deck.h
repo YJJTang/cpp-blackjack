@@ -19,15 +19,7 @@ class Deck {
    * Constructor. Creates a deck object with the specified set of cards.
    * @param cards the set of cards in the new deck
    */
-  explicit Deck(const std::vector<Card>& cards) : cards_(cards) {};
-
-  /**
-   * Shuffles the deck using the uniform random bit generator.
-   * @tparam URBG Uniform Random Bit Generator. The type of RNG engine for shuffling
-   * @param rng the specific URBG to be used for this shuffle
-   */
-  template<typename URBG>
-  void shuffle(URBG&& rng);
+  explicit Deck(const std::vector<Card>& cards) : cards_(cards){};
 
   /**
    * Peeks the top n cards in order (i.e. top card 1st in output), and returns them in the same order.
@@ -40,7 +32,7 @@ class Deck {
    * Peeks the top card, and places it back on the top.
    * @return the top card
    */
-  Card peek();
+  std::optional<Card> peek();
 
   /**
    * Pops the top n cards in order (i.e. top card 1st in output), and removes them from the deck.
@@ -53,7 +45,13 @@ class Deck {
    * Pops the top card.
    * @return the top card
    */
-  Card pop();
+  std::optional<Card> pop();
+
+  /**
+   * Returns a reference to the list of cards in the deck
+   * @return a reference to the vector of cards
+   */
+  std::vector<Card>& cards() { return cards_; };
 
   // Operators
   friend std::ostream& operator<<(std::ostream& os, const Deck& deck) {

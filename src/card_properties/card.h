@@ -82,6 +82,9 @@ class Card {
     return os;
   };
 
+  Suit suit() { return suit_; }
+  Value value() { return value_; }
+
  private:
   Suit suit_;
   Value value_;
